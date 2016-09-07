@@ -14597,7 +14597,7 @@ RK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> When the model is trained with max_depth of 1, it suffers from high bias but the higher the max_depth, the more variance the model is able to capture, and therefore, variance increases. Therefore, when the model is trained with max_depth of 10, it suffers from high variance. From the graph, the two curves are kinda close, but around the point where max_depth is 4, the validation score decreases even though the training score increases.</p>
+<p><strong>Answer: </strong> When the model is trained with max_depth of 1, it suffers from high bias but the higher the max_depth, the more variance the model is able to capture, and therefore, variance increases. Therefore, when the model is trained with max_depth of 10, it suffers from high variance. From the graph, at max_depth = 1, the two curves are close together, with low training and testing scores, but at max_depth = 10, the training score is very high (1) while the testing score is lower (around 0.8) and the curves are far apart.</p>
 
 </div>
 </div>
@@ -14648,7 +14648,7 @@ RK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> Grid search is a way to select the best of a family of models, parametarized by a grid of parameters. It is a way of performing hyperparameter optimization. To apply grid search, you train a set of models which differ from each other in their parameter values, and evaluate them using cross validation.</p>
+<p><strong>Answer: </strong> Grid search is a way to select the best of a family of models, parametarized by a grid of parameters. It is a way of performing hyperparameter optimization by exhaustively searching through a manually specified subset of the hyperparameter space. To apply grid search, you train a set of models which differ from each other in their parameter values, and evaluate them.</p>
 
 </div>
 </div>
@@ -14891,14 +14891,115 @@ Predicted selling price for Client 3&#39;s home: $921,900.00
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong> I'll recommend:</p>
 <ul>
-<li>Client 1: <strong><code>$411,096.00</code></strong> (5 rooms, rich neighborhood, 15 students per teacher: Kinda expensive)</li>
-<li>Client 2: <strong><code>$219,961.54</code></strong> (4 rooms, poorer neighborhood, 22 students per teacher: Not expensive)</li>
-<li>Client 3: <strong><code>$921,900.00</code></strong> (8 rooms, rich neighborhood, 12 students per teacher: Definitely expensive)
-The prices seem reasonable.</li>
+<li>Client 1: <strong><code>$411,096.00</code></strong>
+  -The estimate is inside the normal range of prices we have, and the feature values are all between those of other clients, so it makes sense that the price is in between also.</li>
+<li>Client 2: <strong><code>$219,961.54</code></strong> 
+  -The estimate is more than one standard deviation below the mean but less than two. Of the 3 clients' houses, this one has lowest RM, highest LSTAT, and highest PTRATIO. All this should decrease the price, which is in line with it being the lowest of all prices.</li>
+<li>Client 3: <strong><code>$921,900.00</code></strong>
+  -The estimate is more than 3 standard deviations above the mean (bigger than 906,930.78 USD) and very close to the maximum of 1,024,800.00 USD. Thus, this value is very atypical for this dataset and should be viewed with scepticism. This is the house with highest RM, lowest LSTAT, and lowest PTRATIO of all 3 clients. Thus, it seems theoretically ok that is has the highest price too.</li>
 </ul>
+<p>The prices seem reasonable.</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[27]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RM</th>
+      <th>LSTAT</th>
+      <th>PTRATIO</th>
+      <th>MEDV</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>489.000000</td>
+      <td>489.000000</td>
+      <td>489.000000</td>
+      <td>4.890000e+02</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>6.240288</td>
+      <td>12.939632</td>
+      <td>18.516564</td>
+      <td>4.543429e+05</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.643650</td>
+      <td>7.081990</td>
+      <td>2.111268</td>
+      <td>1.653403e+05</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>3.561000</td>
+      <td>1.980000</td>
+      <td>12.600000</td>
+      <td>1.050000e+05</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>5.880000</td>
+      <td>7.370000</td>
+      <td>17.400000</td>
+      <td>3.507000e+05</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>6.185000</td>
+      <td>11.690000</td>
+      <td>19.100000</td>
+      <td>4.389000e+05</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>6.575000</td>
+      <td>17.120000</td>
+      <td>20.200000</td>
+      <td>5.187000e+05</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>8.398000</td>
+      <td>37.970000</td>
+      <td>22.000000</td>
+      <td>1.024800e+06</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
